@@ -28,17 +28,14 @@ class CourseListView(APIView):
     def get(self, request):
         courses = Course.objects.filter(is_published=True)
 
-        # Filter by category
         category = request.query_params.get('category')
         if category:
             courses = courses.filter(category__id=category)
 
-        # Filter by level
         level = request.query_params.get('level')
         if level:
             courses = courses.filter(level=level)
 
-        # Filter free courses
         is_free = request.query_params.get('is_free')
         if is_free:
             courses = courses.filter(is_free=True)
@@ -51,6 +48,15 @@ class CourseListView(APIView):
 
     def post(self, request):
         """POST /api/courses/ — naya course banao (instructor only)"""
+        
+        # Login check pehle
+        if not request.user.is_authenticated:
+            return Response(
+                {'error': 'Login required!'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # Role check
         if request.user.role != 'instructor':
             return Response(
                 {'error': 'Only instructors can create courses!'},
@@ -94,6 +100,14 @@ class CourseDetailView(APIView):
 
     def put(self, request, pk):
         """Course update karo — sirf instructor apna course update kar sakta hai"""
+
+        # Login check
+        if not request.user.is_authenticated:
+            return Response(
+                {'error': 'Login required!'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         try:
             course = Course.objects.get(pk=pk, instructor=request.user)
             serializer = CourseCreateSerializer(
@@ -121,7 +135,6 @@ class EnrollView(APIView):
         try:
             course = Course.objects.get(pk=pk)
 
-            # Already enrolled?
             if Enrollment.objects.filter(
                 student=request.user,
                 course=course
@@ -131,14 +144,13 @@ class EnrollView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # Paid course ke liye payment chahiye
             if not course.is_free:
                 return Response(
                     {'error': 'This is a paid course. Please make payment first!'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            enrollment = Enrollment.objects.create(
+            Enrollment.objects.create(
                 student=request.user,
                 course=course
             )
