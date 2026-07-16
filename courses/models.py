@@ -4,7 +4,7 @@ from django.db import models
 from users.models import CustomUser
 
 class Category(models.Model):
-    """Course Category — jaise Web Dev, Data Science, etc."""
+    """Course Category —  Web Dev, Data Science, etc."""
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -59,7 +59,7 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    """Ek Course ke andar multiple lessons hote hain"""
+    
     course = models.ForeignKey(
         Course,
         on_delete=models.CASCADE,
@@ -92,7 +92,7 @@ class Enrollment(models.Model):
     completed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('student', 'course')  # Ek course ek baar hi enroll ho
+        unique_together = ('student', 'course')  
 
     def __str__(self):
         return f"{self.student.username} - {self.course.title}"

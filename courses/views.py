@@ -12,7 +12,7 @@ from .serializers import (
 
 
 class CategoryListView(APIView):
-    """GET /api/courses/categories/ — sabhi categories"""
+    
     permission_classes = [AllowAny]
 
     def get(self, request):
@@ -22,7 +22,7 @@ class CategoryListView(APIView):
 
 
 class CourseListView(APIView):
-    """GET /api/courses/ — sabhi published courses"""
+    
     permission_classes = [AllowAny]
 
     def get(self, request):
@@ -47,7 +47,7 @@ class CourseListView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        """POST /api/courses/ — naya course banao (instructor only)"""
+        
         
         # Login check pehle
         if not request.user.is_authenticated:
@@ -81,7 +81,7 @@ class CourseListView(APIView):
 
 
 class CourseDetailView(APIView):
-    """GET /api/courses/<id>/ — ek course ki detail"""
+    
     permission_classes = [AllowAny]
 
     def get(self, request, pk):
@@ -99,7 +99,7 @@ class CourseDetailView(APIView):
             )
 
     def put(self, request, pk):
-        """Course update karo — sirf instructor apna course update kar sakta hai"""
+        
 
         # Login check
         if not request.user.is_authenticated:
@@ -128,7 +128,7 @@ class CourseDetailView(APIView):
 
 
 class EnrollView(APIView):
-    """POST /api/courses/<id>/enroll/ — free course mein enroll karo"""
+    
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
@@ -166,7 +166,7 @@ class EnrollView(APIView):
 
 
 class MyCoursesView(APIView):
-    """GET /api/courses/my-courses/ — mere enrolled courses"""
+    
     permission_classes = [IsAuthenticated]
 
     def get(self, request):

@@ -6,7 +6,7 @@ from courses.models import Course
 import uuid
 
 class Certificate(models.Model):
-    """Course complete karne pe certificate milega"""
+    
     student = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,
@@ -17,7 +17,7 @@ class Certificate(models.Model):
         on_delete=models.CASCADE,
         related_name='certificates'
     )
-    # Unique certificate ID — verify karne ke liye
+    
     certificate_id = models.UUIDField(
         default=uuid.uuid4,
         editable=False,
@@ -31,7 +31,7 @@ class Certificate(models.Model):
     )
 
     class Meta:
-        unique_together = ('student', 'course')  # Ek course ka ek hi certificate
+        unique_together = ('student', 'course')  
 
     def __str__(self):
         return f"{self.student.username} - {self.course.title}"

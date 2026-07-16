@@ -5,7 +5,7 @@ from users.models import CustomUser
 from courses.models import Course
 
 class Quiz(models.Model):
-    """Har course ke saath ek quiz hoga"""
+    """All course for one  quiz """
     course = models.OneToOneField(
         Course,
         on_delete=models.CASCADE,
@@ -13,7 +13,7 @@ class Quiz(models.Model):
     )
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    pass_percentage = models.IntegerField(default=70)  # 70% pass hona chahiye
+    pass_percentage = models.IntegerField(default=70)  # 70% pass 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -21,7 +21,7 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
-    """Quiz ke andar questions"""
+    """Quiz under questions"""
     quiz = models.ForeignKey(
         Quiz,
         on_delete=models.CASCADE,
@@ -35,7 +35,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    """Har question ke 4 options hote hain"""
+    """All question  4 options """
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
@@ -49,7 +49,7 @@ class Answer(models.Model):
 
 
 class QuizAttempt(models.Model):
-    """Student ne quiz attempt kiya"""
+    """Student  quiz attempt """
     student = models.ForeignKey(
         CustomUser,
         on_delete=models.CASCADE,

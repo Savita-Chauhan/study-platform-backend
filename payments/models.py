@@ -5,7 +5,7 @@ from users.models import CustomUser
 from courses.models import Course
 
 class Payment(models.Model):
-    """Payment record — Razorpay se aayega"""
+    """Payment record — Razorpay """
 
     STATUS_CHOICES = (
         ('pending', 'Pending'),

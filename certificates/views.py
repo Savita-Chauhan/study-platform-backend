@@ -16,7 +16,7 @@ from courses.models import Course, Enrollment
 class GenerateCertificateView(APIView):
     """
     POST /api/certificates/generate/
-    Course complete hone pe certificate generate karo
+    Course complete  certificate generated
     """
     permission_classes = [IsAuthenticated]
 
@@ -26,7 +26,7 @@ class GenerateCertificateView(APIView):
         try:
             course = Course.objects.get(pk=course_id)
 
-            # Check karo student enrolled hai
+            
             enrollment = Enrollment.objects.filter(
                 student=request.user,
                 course=course
@@ -38,7 +38,7 @@ class GenerateCertificateView(APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            # Already certificate hai?
+            # Already certificate ?
             existing = Certificate.objects.filter(
                 student=request.user,
                 course=course
@@ -51,13 +51,13 @@ class GenerateCertificateView(APIView):
                     'download_url': f'/api/certificates/download/{existing.certificate_id}/'
                 })
 
-            # Certificate record banao
+            # Certificate record 
             certificate = Certificate.objects.create(
                 student=request.user,
                 course=course
             )
 
-            # Enrollment complete mark karo
+            # Enrollment complete mark 
             enrollment.is_completed = True
             enrollment.save()
 
@@ -88,7 +88,7 @@ class DownloadCertificateView(APIView):
                 student=request.user
             )
 
-            # PDF banao
+            # PDF genrated
             buffer = BytesIO()
             p = canvas.Canvas(buffer, pagesize=landscape(A4))
             width, height = landscape(A4)

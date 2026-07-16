@@ -60,7 +60,7 @@ class CourseCreateSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
-        # Instructor automatically logged in user hoga
+        # Instructor automatically logged in user 
         request = self.context.get('request')
         course = Course.objects.create(
             instructor=request.user,

@@ -13,16 +13,16 @@ from .models import CustomUser
 class RegisterView(APIView):
     """
     POST /api/users/register/
-    Naya user banata hai
+    New user created
     """
-    permission_classes = [AllowAny]  # Bina login ke access ho
+    permission_classes = [AllowAny]  
 
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
 
-            # Register hote hi JWT token bhi do
+           
             refresh = RefreshToken.for_user(user)
 
             return Response({
@@ -45,7 +45,7 @@ class RegisterView(APIView):
 class LoginView(APIView):
     """
     POST /api/users/login/
-    Login karke JWT token deta hai
+    Login  JWT token genrated
     """
     permission_classes = [AllowAny]
 
@@ -53,7 +53,7 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
 
-        # Username aur password check karo
+        # Username aur password check 
         user = authenticate(username=username, password=password)
 
         if user:
@@ -80,7 +80,7 @@ class LoginView(APIView):
 class LogoutView(APIView):
     """
     POST /api/users/logout/
-    Refresh token blacklist karta hai
+    Refresh token blacklist 
     """
     permission_classes = [IsAuthenticated]
 
@@ -100,8 +100,8 @@ class LogoutView(APIView):
 
 class ProfileView(APIView):
     """
-    GET  /api/users/profile/ — profile dekho
-    PUT  /api/users/profile/ — profile update karo
+    GET  /api/users/profile/ — profile see
+    PUT  /api/users/profile/ — profile update 
     """
     permission_classes = [IsAuthenticated]
 
@@ -113,7 +113,7 @@ class ProfileView(APIView):
         serializer = UserProfileSerializer(
             request.user,
             data=request.data,
-            partial=True  # Sirf jo fields bhejo wahi update ho
+            partial=True  
         )
         if serializer.is_valid():
             serializer.save()

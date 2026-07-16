@@ -10,6 +10,7 @@ client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 
 
 class ChatbotView(APIView):
+    """AI Chatbot that answers course-related questions using Groq AI."""
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -45,14 +46,15 @@ class ChatbotView(APIView):
 
             if course_context:
                 system_prompt = f"""
-                Tu ek helpful study assistant hai.
+                You are a helpful study assistant.
                 Course content: {course_context}
-                Student ke questions ka course content ke basis pe answer do.
+                Answer the student's questions based on the course content provided.
+                Keep answers clear and concise.
                 """
             else:
                 system_prompt = """
-                Tu ek helpful study assistant hai.
-                Student ke questions ka short aur clear answer do.
+                You are a helpful study assistant.
+                Answer the student's questions clearly and concisely.
                 """
 
             response = client.chat.completions.create(
@@ -70,12 +72,19 @@ class ChatbotView(APIView):
             }, status=status.HTTP_200_OK)
 
         except Course.DoesNotExist:
-            return Response({'error': 'Course not found!'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {'error': 'Course not found!'},
+                status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as e:
-            return Response({'error': f'AI error: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {'error': f'AI error: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class GenerateQuizView(APIView):
+    """Generates multiple choice quiz questions on any topic using Groq AI."""
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -83,12 +92,15 @@ class GenerateQuizView(APIView):
         num_questions = request.data.get('num_questions', 5)
 
         if not topic:
-            return Response({'error': 'Topic is required!'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'Topic is required!'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         prompt = f"""
-        Topic: {topic}
-        {num_questions} multiple choice questions banao.
-        Exactly is format mein do — koi extra text mat likho:
+        Generate {num_questions} multiple choice questions on the topic: {topic}
+        
+        Return in exactly this format with no extra text:
 
         Q1: Question text
         A) Option 1
@@ -141,4 +153,7 @@ class GenerateQuizView(APIView):
             }, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response({'error': f'AI error: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {'error': f'AI error: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

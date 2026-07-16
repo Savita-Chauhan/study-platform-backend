@@ -5,8 +5,8 @@ from .models import CustomUser
 
 class RegisterSerializer(serializers.ModelSerializer):
     """
-    Register ke liye serializer
-    password confirm bhi check karega
+    Register  serializer
+    password confirm 
     """
     password = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
@@ -16,13 +16,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['username', 'email', 'password', 'password2', 'role']
 
     def validate(self, data):
-        # Dono password match hone chahiye
+        # all password matched
         if data['password'] != data['password2']:
             raise serializers.ValidationError("Passwords do not match!")
         return data
 
     def create(self, validated_data):
-        # password2 remove karo — DB mein nahi jayega
+        # password2 remove  — DB no enter in db
         validated_data.pop('password2')
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
@@ -35,7 +35,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """
-    Profile dekhne aur update karne ke liye
+    Profile see update 
+    
     """
     class Meta:
         model = CustomUser
