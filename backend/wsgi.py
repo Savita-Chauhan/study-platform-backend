@@ -5,16 +5,19 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
 application = get_wsgi_application()
 
-# Auto migrate + create superuser on startup
+# Auto migrate on startup
 from django.core.management import call_command
 call_command('migrate', '--run-syncdb')
 
-# Create superuser automatically
+# Create superuser only if not exists
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
     User.objects.create_superuser(
-        username='admin2',
+        username='admin10',
         email='chauhansavita711@gmail.com',
-        password='Admin2@1234'
+        password='Admin10@1234'
     )
+    print("Superuser created successfully!")
+else:
+    print("Superuser already exists - skipping!")
