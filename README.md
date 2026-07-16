@@ -54,5 +54,33 @@ A full-featured AI-powered study platform backend built with Django REST Framewo
 
 
 
+\## 🌐 Live Demo
+
+
+
+\*\*API Base URL:\*\* https://study-platform-backend-46rf.onrender.com
+
+
+
+| Endpoint | URL |
+
+|---|---|
+
+| Home | https://study-platform-backend-46rf.onrender.com/ |
+
+| Register | https://study-platform-backend-46rf.onrender.com/api/users/register/ |
+
+| Login | https://study-platform-backend-46rf.onrender.com/api/users/login/ |
+
+| Courses | https://study-platform-backend-46rf.onrender.com/api/courses/ |
+
+| Chatbot | https://study-platform-backend-46rf.onrender.com/api/chatbot/chat/ |
+
+| Admin | https://study-platform-backend-46rf.onrender.com/admin/ |
+
+
+
+
+
 \## 📁 Project Structure
 
